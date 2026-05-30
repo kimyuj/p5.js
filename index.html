@@ -175,18 +175,47 @@
     .card-preview {
       position: relative;
       width: 100%;
-      aspect-ratio: 16 / 9;
+      aspect-ratio: 3 / 2;   /* 600:400 = 3:2 */
       overflow: hidden;
       background: #f8f4ff;
     }
     .card-preview iframe {
       position: absolute;
       top: 0; left: 0;
-      width: 800px;
-      height: 450px;
+      width: 600px;
+      height: 400px;
       border: none;
       transform-origin: top left;
+      pointer-events: none;   /* 기본: 인터랙션 차단 (스크롤 방해 방지) */
+    }
+
+    /* 과제3 전용: 호버 시 인터랙션 활성화 */
+    .card.interactive .card-preview iframe {
+      pointer-events: none;   /* JS로 제어 */
+    }
+
+    /* 인터랙션 힌트 오버레이 */
+    .interact-hint {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(200, 180, 240, 0.55);
+      backdrop-filter: blur(2px);
+      color: #5a3a8a;
+      font-size: 13px;
+      font-family: 'Gowun Dodum', sans-serif;
+      letter-spacing: 0.05em;
       pointer-events: none;
+      opacity: 1;
+      transition: opacity 0.3s ease;
+      border-radius: 0;
+      gap: 6px;
+    }
+    .interact-hint span { font-size: 18px; }
+    .card.interactive:hover .interact-hint {
+      opacity: 0;
     }
 
     /* Card info */
@@ -347,10 +376,11 @@
       </div>
 
       <!-- 과제 3 -->
-      <div class="card">
+      <div class="card interactive">
         <div class="card-bar"></div>
         <div class="card-preview">
           <iframe src="sample3/index.html" scrolling="no" title="과제 3"></iframe>
+          <div class="interact-hint"><span>🖱️</span> 여기서 바로 조작해보세요!</div>
         </div>
         <div class="card-info">
           <div class="card-meta">
@@ -372,19 +402,32 @@
   </footer>
 
   <script>
-    // iframe 배율 자동 계산
+    // iframe 배율 자동 계산 (캔버스 기준: 600×400)
     function scaleIframes() {
       document.querySelectorAll('.card-preview').forEach(preview => {
         const iframe = preview.querySelector('iframe');
         if (!iframe) return;
-        const scaleX = preview.offsetWidth  / 800;
-        const scaleY = preview.offsetHeight / 450;
-        const scale  = Math.min(scaleX, scaleY);
+        const scale = preview.offsetWidth / 600;  /* 600px 기준으로만 계산 (높이는 aspect-ratio가 보장) */
         iframe.style.transform = `scale(${scale})`;
+        iframe.style.width  = '600px';
+        iframe.style.height = '400px';
       });
     }
     scaleIframes();
     window.addEventListener('resize', scaleIframes);
+
+    // 과제3 카드: 호버 시 pointer-events 활성화 (마우스·키보드 인터랙션)
+    const interactiveCard = document.querySelector('.card.interactive');
+    if (interactiveCard) {
+      const iframe = interactiveCard.querySelector('iframe');
+      interactiveCard.addEventListener('mouseenter', () => {
+        iframe.style.pointerEvents = 'auto';
+        iframe.focus();
+      });
+      interactiveCard.addEventListener('mouseleave', () => {
+        iframe.style.pointerEvents = 'none';
+      });
+    }
   </script>
 </body>
 </html>

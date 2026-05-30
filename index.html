@@ -193,29 +193,11 @@
     .card.interactive .card-preview iframe {
       pointer-events: none;   /* JS로 제어 */
     }
-
-    /* 인터랙션 힌트 오버레이 */
-    .interact-hint {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: rgba(200, 180, 240, 0.55);
-      backdrop-filter: blur(2px);
-      color: #5a3a8a;
-      font-size: 13px;
-      font-family: 'Gowun Dodum', sans-serif;
-      letter-spacing: 0.05em;
-      pointer-events: none;
-      opacity: 1;
-      transition: opacity 0.3s ease;
-      border-radius: 0;
-      gap: 6px;
-    }
-    .interact-hint span { font-size: 18px; }
-    .card.interactive:hover .interact-hint {
-      opacity: 0;
+    .card-desc {
+      padding: 12px 22px 0;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.7;
     }
 
     /* Card info */
@@ -310,7 +292,7 @@
 
   <header>
     <div class="badge">✦ Creative Coding Portfolio</div>
-    <h1>나의 <span>p5.js</span> 작품 모음</h1>
+    <h1>김유정의 <span>p5.js</span> 작품 모음</h1>
     <p class="subtitle">과제 1 · 2 · 3 · 4 를 한 눈에 확인해보세요 🌸</p>
   </header>
 
@@ -327,6 +309,7 @@
         <div class="card-preview">
           <iframe src="sample1/index.html" scrolling="no" title="과제 1"></iframe>
         </div>
+        <p class="card-desc">창문 너머로 보이는 아름다운 일몰의 순간을 표현했습니다.</p>
         <div class="card-info">
           <div class="card-meta">
             <div class="card-num">1</div>
@@ -345,6 +328,7 @@
         <div class="card-preview">
           <iframe src="sample4/index.html" scrolling="no" title="과제 4"></iframe>
         </div>
+        <p class="card-desc">해의 움직임에 따라 변화하는 하늘의 모습을 감상해보세요.</p>
         <div class="card-info">
           <div class="card-meta">
             <div class="card-num">4</div>
@@ -363,6 +347,7 @@
         <div class="card-preview">
           <iframe src="sample2/index.html" scrolling="no" title="과제 2"></iframe>
         </div>
+        <p class="card-desc">제 모습을 모티브로 한 캐릭터를 디자인했습니다.</p>
         <div class="card-info">
           <div class="card-meta">
             <div class="card-num">2</div>
@@ -380,8 +365,8 @@
         <div class="card-bar"></div>
         <div class="card-preview">
           <iframe src="sample3/index.html" scrolling="no" title="과제 3"></iframe>
-          <div class="interact-hint"><span>🖱️</span> 여기서 바로 조작해보세요!</div>
         </div>
+        <p class="card-desc">마우스 클릭으로 표정 변화, 좌우 방향키로 귀 생성, 둘 다 활성화 시 특별한 변화를 확인해보세요.</p>
         <div class="card-info">
           <div class="card-meta">
             <div class="card-num">3</div>
@@ -416,7 +401,7 @@
     scaleIframes();
     window.addEventListener('resize', scaleIframes);
 
-    // 과제3 카드: 호버 시 pointer-events 활성화 (마우스·키보드 인터랙션)
+    // 과제3 : 호버 시 pointer-events 활성화
     const interactiveCard = document.querySelector('.card.interactive');
     if (interactiveCard) {
       const iframe = interactiveCard.querySelector('iframe');
